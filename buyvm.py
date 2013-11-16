@@ -41,7 +41,7 @@ def main():
             if res['qty'] == 0 and vm['qty'] > 0:
                 alerts['newstock'].append(vm)
             elif res['qty'] > 0 and vm['qty'] == 0:
-                alerts['depleted'].append(vm['name'] + "\n")
+                alerts['depleted'].append(vm)
             res.update(vm)
         
         db.save(res)
