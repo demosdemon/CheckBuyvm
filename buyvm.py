@@ -1,5 +1,7 @@
 #!/usr/bin/env python2.7
 
+# pip install pymongo
+
 from contextlib import closing
 from urllib2 import urlopen, URLError
 from pymongo import MongoClient
@@ -23,15 +25,15 @@ def main():
         try:
             res = db.find_one({'pid': vm['pid']})
         except KeyError:
-            pass
+            continue
         
         if res is None:
             if vm['qty'] > 0:
-                alerts['newstock'].append("%(name)17s %(qty)3d\n" % vm)
+                alerts['newstock'].append(vm)
             res = vm
         else:
             if res['qty'] == 0 and vm['qty'] > 0:
-                alerts['newstock'].append("%(name)17s %(qty)3d\n" % vm)
+                alerts['newstock'].append(vm)
             elif res['qty'] > 0 and vm['qty'] == 0:
                 alerts['depleted'].append(vm['name'] + "\n")
             res.update(vm)
@@ -40,13 +42,14 @@ def main():
         
     if alerts['newstock']:
         sys.stdout.write("New Stock:\n")
-        sys.stdout.writelines(alerts['newstock'])
-        if alerts['depleted']:
-            sys.stdout.write("\n")
+        sys.stdout.writelines("%(name)17s %(qty)3d\n" % vm for vm in alerts['newstock'])
+    
+    if alerts['newstock'] and alerts['depleted']:
+        sys.stdout.write("\n")
     
     if alerts['depleted']:
         sys.stdout.write("Depleted Stock:\n")
-        sys.stdout.writelines(alerts['depleted'])
+        sys.stdout.writelines("%(name)s\n" % vm for vm in alerts['depleted'])
         
     
 if __name__ == '__main__':
