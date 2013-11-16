@@ -16,6 +16,7 @@ from time import sleep
 import sys
 
 BUYVM_JSON = 'http://www.doesbuyvmhavestock.com/automation.json'
+NEWSTOCK_FMT = "%(name)17s %(qty)3d https://my.frantech.ca/cart.php?a=add&pid=%(pid)d\n"
 
 def main():
     with closing(urlopen(BUYVM_JSON)) as fp:
@@ -50,7 +51,7 @@ def main():
         
     if alerts['newstock']:
         sys.stdout.write("New Stock:\n")
-        sys.stdout.writelines("%(name)17s %(qty)3d https://my.frantech.ca/cart.php?a=add&pid=%(pid)d\n" % vm for vm in alerts['newstock'])
+        sys.stdout.writelines(NEWSTOCK_FMT % vm for vm in alerts['newstock'])
     
     if alerts['newstock'] and alerts['depleted']:
         sys.stdout.write("\n")
