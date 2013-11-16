@@ -12,6 +12,7 @@ from contextlib import closing
 from datetime import datetime, timedelta
 from urllib2 import urlopen, URLError, HTTPError
 from pymongo import MongoClient
+from time import sleep
 import sys
 
 BUYVM_JSON = 'http://www.doesbuyvmhavestock.com/automation.json'
@@ -66,4 +67,5 @@ if __name__ == '__main__':
             main()
             break
         except HTTPError:
+            sleep(30)
             continue
