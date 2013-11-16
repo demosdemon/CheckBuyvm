@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.7
 
 from contextlib import closing
-from urllib2 import urlopen
+from urllib2 import urlopen, URLError
 from pymongo import MongoClient
 import json, sys
 
@@ -41,7 +41,9 @@ def main():
     if alerts['newstock']:
         sys.stdout.write("New Stock:\n")
         sys.stdout.writelines(alerts['newstock'])
-        
+        if alerts['depleted']:
+            sys.stdout.write("\n")
+    
     if alerts['depleted']:
         sys.stdout.write("Depleted Stock:\n")
         sys.stdout.writelines(alerts['depleted'])
