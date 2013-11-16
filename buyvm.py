@@ -9,7 +9,8 @@ except ImportError:
     import json
 
 from contextlib import closing
-from urllib2 import urlopen, URLError
+from datetime import datetime, timedelta
+from urllib2 import urlopen, URLError, HTTPError
 from pymongo import MongoClient
 import sys
 
@@ -59,4 +60,10 @@ def main():
         
     
 if __name__ == '__main__':
-    main()
+    td = datetime.now() + timedelta(minutes=10)
+    while datetime.now() <= td:
+        try:
+            main()
+            break
+        except HTTPError:
+            continue
