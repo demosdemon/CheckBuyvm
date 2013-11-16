@@ -1,11 +1,18 @@
 #!/usr/bin/env python2.7
 
 # pip install pymongo
+# pip install simplejson ## Optional
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 from contextlib import closing
 from urllib2 import urlopen, URLError
 from pymongo import MongoClient
-import json, sys
+import sys
+
 
 BUYVM_JSON = 'http://www.doesbuyvmhavestock.com/automation.json'
 
